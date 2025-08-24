@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { required, lowercase } = require("zod/mini");
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -25,6 +25,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-const user = mongoose.model("User", userSchema);
+const User = mongoose.model("User", UserSchema);
 
-module.exports = user;
+module.exports = User;

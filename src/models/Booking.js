@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { required } = require("zod/mini");
 
-const bookingSchema = new mongoose.Schema({
+const BookingSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -20,9 +20,10 @@ const bookingSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["pending", "completed", "approved", "declined"],
+    default: "pending",
   },
 });
 
-const booking = mongoose.model("Booking", bookingSchema);
+const Booking = mongoose.model("Booking", BookingSchema);
 
-module.exports = booking;
+module.exports = Booking;

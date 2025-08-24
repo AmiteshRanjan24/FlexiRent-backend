@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 const { string } = require("zod");
 const { required } = require("zod/mini");
 
-const vehicleSchema = new mongoose.Schema({
+const VehicleSchema = new mongoose.Schema({
   providerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  vehicleName: {
+  vehicleCompany: {
     type: String,
     required: true,
   },
@@ -31,6 +31,6 @@ const vehicleSchema = new mongoose.Schema({
   },
 });
 
-const vehicle = mongoose.model("Vehicle", vehicleSchema);
+const Vehicle = mongoose.model("Vehicle", VehicleSchema);
 
-module.exports = vehicle;
+module.exports = Vehicle;
