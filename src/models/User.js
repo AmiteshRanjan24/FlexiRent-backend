@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { required, lowercase } = require("zod/mini");
 
 const UserSchema = new mongoose.Schema({
   name: {

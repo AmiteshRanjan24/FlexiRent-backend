@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { required } = require("zod/mini");
 
 const BookingSchema = new mongoose.Schema({
   userId: {
