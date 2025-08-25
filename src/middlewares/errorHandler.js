@@ -4,7 +4,8 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(statusCode).json({
     success: false,
-    message: err.message || "Something went wrong. Please try again later.",
+    message: "Something went wrong. Please try again later.",
+    err: err.message,
   });
 };
 
