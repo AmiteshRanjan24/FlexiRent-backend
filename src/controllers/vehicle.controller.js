@@ -1,13 +1,13 @@
 const Vehicle = require("../models/Vehicle");
+const {
+  successResponse,
+  resourceNotFound,
+} = require("../utils/responseHelper");
 
 const createVehicle = async (req, res, next) => {
   try {
     const vehicle = await Vehicle.create(req.body);
-    res.status(201).json({
-      success: true,
-      message: "Vehicle created Successfully",
-      data: vehicle,
-    });
+    return successResponse(res, 201, "Vehicle created successfully", vehicle);
   } catch (err) {
     next(err);
   }
@@ -16,11 +16,7 @@ const createVehicle = async (req, res, next) => {
 const getVehicles = async (req, res, next) => {
   try {
     const vehicles = await Vehicle.find();
-    res.status(200).json({
-      success: true,
-      count: vehicles.length,
-      data: vehicles,
-    });
+    return successResponse(res, 200, "Vehicles fetched successfully", vehicles);
   } catch (err) {
     next(err);
   }
@@ -30,15 +26,9 @@ const getVehicleById = async (req, res, next) => {
   try {
     const vehicle = await Vehicle.findById(req.params.id);
     if (!vehicle) {
-      return res.status(404).json({
-        success: false,
-        message: "Vehicle not found",
-      });
+      return resourceNotFound(res, "Vehicle");
     }
-    res.status(200).json({
-      success: true,
-      data: vehicle,
-    });
+    return successResponse(res, 200, "Vehicle fetched successfully", vehicle);
   } catch (err) {
     next(err);
   }
@@ -52,17 +42,10 @@ const updateVehicle = async (req, res, next) => {
     });
 
     if (!vehicle) {
-      return res.status(404).json({
-        success: false,
-        message: "Vehicle not found",
-      });
+      return resourceNotFound(res, "Vehicle");
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Vehicle updated successfully",
-      data: vehicle,
-    });
+    return successResponse(res, 200, "Vehicle updated successfully", vehicle);
   } catch (err) {
     next(err);
   }
@@ -73,16 +56,10 @@ const deleteVehicle = async (req, res, next) => {
     const vehicle = await Vehicle.findByIdAndDelete(req.params.id);
 
     if (!vehicle) {
-      return res.status(404).json({
-        success: false,
-        message: "Vehicle not found",
-      });
+      return resourceNotFound(res, "Vehicle");
     }
 
-    return res.status(200).json({
-      success: true,
-      message: "Vehicle deleted successfully",
-    });
+    return successResponse(res, 200, "Vehicle deleted successfully");
   } catch (err) {
     next(err);
   }
