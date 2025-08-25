@@ -18,4 +18,15 @@ const resourceNotFound = (res, resourceName = "Resource") => {
   });
 };
 
-module.exports = { successResponse, resourceNotFound };
+const errorResponse = (
+  res,
+  statusCode = 400,
+  message = "An error occurred"
+) => {
+  return res.status(statusCode).json({
+    success: false,
+    message,
+  });
+};
+
+module.exports = { successResponse, resourceNotFound, errorResponse };
