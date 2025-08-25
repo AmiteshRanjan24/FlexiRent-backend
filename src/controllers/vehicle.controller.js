@@ -2,11 +2,14 @@ const Vehicle = require("../models/Vehicle");
 const {
   successResponse,
   resourceNotFound,
+  errorResponse,
 } = require("../utils/responseHelper");
 
 const createVehicle = async (req, res, next) => {
   try {
-    const vehicle = await Vehicle.create(req.body);
+    const providerId = req.user.id;
+    const vehicleData = { ...req.body, providerId };
+    const vehicle = await Vehicle.create(vehicleData);
     return successResponse(res, 201, "Vehicle created successfully", vehicle);
   } catch (err) {
     next(err);
@@ -36,16 +39,22 @@ const getVehicleById = async (req, res, next) => {
 
 const updateVehicle = async (req, res, next) => {
   try {
-    const vehicle = await Vehicle.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const vehicle = await Vehicle.findById(req.params.id);
 
     if (!vehicle) {
       return resourceNotFound(res, "Vehicle");
     }
 
-    return successResponse(res, 200, "Vehicle updated successfully", vehicle);
+    if (vehicle.providerId.toString() !== req.user.id) {
+      return errorResponse(res, 403, "Not allowed to modify this vehicle");
+    }
+
+    const updated = await Vehicle.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    return successResponse(res, 200, "Vehicle updated successfully", updated);
   } catch (err) {
     next(err);
   }
@@ -53,11 +62,17 @@ const updateVehicle = async (req, res, next) => {
 
 const deleteVehicle = async (req, res, next) => {
   try {
-    const vehicle = await Vehicle.findByIdAndDelete(req.params.id);
+    const vehicle = await Vehicle.findById(req.params.id);
 
     if (!vehicle) {
       return resourceNotFound(res, "Vehicle");
     }
+
+    if (vehicle.providerId.toString() !== req.user.id) {
+      return errorResponse(res, 403, "Not allowed to delete this vehicle");
+    }
+
+    await Vehicle.findByIdAndDelete(req.params.id);
 
     return successResponse(res, 200, "Vehicle deleted successfully");
   } catch (err) {
