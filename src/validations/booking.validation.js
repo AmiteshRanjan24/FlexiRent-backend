@@ -9,4 +9,9 @@ const bookingSchema = z.object({
     .default("pending"),
 });
 
-module.exports = bookingSchema;
+const updateBookingSchema = bookingSchema.partial();
+
+module.exports = {
+  bookingSchema,
+  updateBookingSchema,
+};
