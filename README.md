@@ -80,7 +80,7 @@ JWT_SECRET=your_secret_key
 #### 4. Run the server
 
 ```bash
-npm run dev
+node server.js
 ```
 
 ## 📌 API Endpoints
